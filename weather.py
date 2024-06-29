@@ -69,29 +69,35 @@ def drawCurrentWather(weatherForecastData):
         draw.text((x1stRowOffset, y1TopMergin), f"{currentTime} 現在の天気", font = CustomFont, fill = "#600000") #text(50,50) means the left upper corner is 50 pixcel down, 50 pixel left form bace picture's left upper corner
         icon_image = Image.open(requests.get(currentWeatherIconURL, stream = True).raw).resize((70, 70))
         image.paste(icon_image, (x1stRowOffset + 50, y1TopMergin + 20))
-        draw.text((x1stRowOffset, y1stRowOffset + y1TopMergin + 25), f"気温   {currentTempInC}℃", font = CustomFont, fill = "#600000")
+        draw.text((x1stRowOffset, y1stRowOffset + y1TopMergin + 25), f"気温         {currentTempInC}℃", font = CustomFont, fill = "#600000")
         draw.text((x1stRowOffset, y1stRowOffset + y1TopMergin + 50), f"体感温度   {currentFeelsLike}℃", font = CustomFont, fill = "#600000")
-        draw.text((x1stRowOffset, y1stRowOffset + y1TopMergin + 75), f"風速   {currentWindSpeed} km/h", font = CustomFont, fill = "#600000")
-        draw.text((x1stRowOffset, y1stRowOffset + y1TopMergin + 100), f"湿度   {currentHumidity}%", font = CustomFont, fill = "#600000")
-        draw.text((x1stRowOffset, y1stRowOffset + y1TopMergin + 125), f"日の出   {sunriseToday}", font = CustomFont, fill = "#600000")
+        draw.text((x1stRowOffset, y1stRowOffset + y1TopMergin + 75), f"風速       {currentWindSpeed} km/h", font = CustomFont, fill = "#600000")
+        draw.text((x1stRowOffset, y1stRowOffset + y1TopMergin + 100), f"湿度          {currentHumidity}%", font = CustomFont, fill = "#600000")
+        draw.text((x1stRowOffset, y1stRowOffset + y1TopMergin + 125), f"日の出     {sunriseToday}", font = CustomFont, fill = "#600000")
         draw.text((x1stRowOffset, y1stRowOffset + y1TopMergin + 150), f"日の入り   {sunsetToday}", font = CustomFont, fill = "#600000")
     
         forecastDays = weatherForecastData['forecast']['forecastday']
         for counter, day in enumerate(forecastDays):
-            WeatherIconURL = "http:" + day['day']['condition']['icon']
+            WeatherIconURL = day['day']['condition']['icon']
+            if WeatherIconURL.startswith("//"):
+                WeatherIconURL = "http:" + WeatherIconURL
+            else:
+                WeatherIconURL = WeatherIconURL
+                
             margin = x2ndRowOffset * counter
             draw.text((x2ndRightOffset + margin + 20, y2TopMergin), f"{day['date']}", font = CustomFont, fill = "#600000")
             icon_image = Image.open(requests.get(WeatherIconURL, stream = True).raw).resize((70, 70))
-            image.paste(icon_image, (x2ndRightOffset + 40, y2TopMergin + 20))
+            image.paste(icon_image, (x2ndRightOffset + 40 + margin, y2TopMergin + 20))
+            print(f"{WeatherIconURL}")
             draw.text((x2ndRightOffset + margin, y2TopMergin + y2ndRowOffset + 25), f"最高気温   {day['day']['maxtemp_c']}℃", font = CustomFont, fill = "#600000")
             draw.text((x2ndRightOffset + margin, y2TopMergin + y2ndRowOffset + 50), f"最低気温   {day['day']['mintemp_c']}℃", font = CustomFont, fill = "#600000")
-            draw.text((x2ndRightOffset + margin, y2TopMergin + y2ndRowOffset + 75), f"降水確率   {day['day']['daily_chance_of_rain']}%", font = CustomFont, fill = "#600000")
-            draw.text((x2ndRightOffset + margin, y2TopMergin + y2ndRowOffset + 100), f"降水量   {day['day']['totalprecip_mm']}%", font = CustomFont, fill = "#600000")
+            draw.text((x2ndRightOffset + margin, y2TopMergin + y2ndRowOffset + 75), f"降水確率     {day['day']['daily_chance_of_rain']}%", font = CustomFont, fill = "#600000")
+            draw.text((x2ndRightOffset + margin, y2TopMergin + y2ndRowOffset + 100), f"降水量       {day['day']['totalprecip_mm']}%", font = CustomFont, fill = "#600000")
             
         return ImageTk.PhotoImage(image)
     
     else:
-        draw.text((0,0), f"天気予報データの取得に失敗しました。", font = CustomFont, fill = "#600000")
+        draw.text((30,30), f"天気予報データの取得に失敗しました。", font = CustomFont, fill = "#600000")
         return ImageTk.PhotoImage(image)
 
 def updateWeather():
@@ -110,25 +116,25 @@ def updateWeather():
 updateWeather()
 root.mainloop()
 
-if weatherForecastData:
-    print("今日の天気")
-    print(f"現在地: {weatherForecastData['location']['name']}, {weatherForecastData['location']['region']}, {weatherForecastData['location']['country']}")
-    print(f"現在時刻: {weatherForecastData['location']['localtime']}")
-    print(f"現在の天気: {weatherForecastData['current']['condition']['icon']}")
-    print(f"気温: {weatherForecastData['current']['temp_c']} ℃")
-    print(f"湿度: {weatherForecastData['current']['humidity']} %")
-    print(f"風速: {weatherForecastData['current']['wind_kph']} km/h")
-    print(f"気圧: {weatherForecastData['current']['pressure_mb']} hPa")
-    print(f"体感温度: {weatherForecastData['current']['feelslike_c']} ℃\n")
+#if weatherForecastData:
+#    print("今日の天気")
+#    print(f"現在地: {weatherForecastData['location']['name']}, {weatherForecastData['location']['region']}, {weatherForecastData['location']['country']}")
+#    print(f"現在時刻: {weatherForecastData['location']['localtime']}")
+#    print(f"現在の天気: {weatherForecastData['current']['condition']['icon']}")
+#    print(f"気温: {weatherForecastData['current']['temp_c']} ℃")
+#    print(f"湿度: {weatherForecastData['current']['humidity']} %")
+#    print(f"風速: {weatherForecastData['current']['wind_kph']} km/h")
+#    print(f"気圧: {weatherForecastData['current']['pressure_mb']} hPa")
+#    print(f"体感温度: {weatherForecastData['current']['feelslike_c']} ℃\n")
     
-    print("今週の天気:")
-    forecastDays = weatherForecastData['forecast']['forecastday']
-    for day in forecastDays:
-        print(f"日付: {day['date']}")
-        print(f"天気: {day['day']['condition']['icon']}")
-        print(f"最高気温: {day['day']['maxtemp_c']} ℃")
-        print(f"最低気温: {day['day']['mintemp_c']} ℃ \n")
-else:
-    print("天気予報データの取得に失敗しました。")
-print(weatherForecastData)
+#    print("今週の天気:")
+#    forecastDays = weatherForecastData['forecast']['forecastday']
+#    for day in forecastDays:
+#        print(f"日付: {day['date']}")
+#        print(f"天気: {day['day']['condition']['icon']}")
+#        print(f"最高気温: {day['day']['maxtemp_c']} ℃")
+#        print(f"最低気温: {day['day']['mintemp_c']} ℃ \n")
+#else:
+#    print("天気予報データの取得に失敗しました。")
+#print(weatherForecastData)
 
