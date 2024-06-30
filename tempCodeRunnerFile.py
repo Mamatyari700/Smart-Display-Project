@@ -1,1 +1,0 @@
-root.after(600000, updateWeather)
