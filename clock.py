@@ -20,7 +20,7 @@ EightBitDragonSecond = ImageFont.truetype(fontPath, 70)
 root = tk.Tk()
 root.title("ClockPage") 
 root.geometry(f"{windowWidth}x{windowHeight}")	#setting windowsize for testing 
-#root.attributes("-fullscreen", True)	#make the soft fullscreen
+root.attributes("-fullscreen", True)	#make the soft fullscreen
 root.configure(bg="black")
 canvas = tk.Canvas(root, width = windowWidth, height = 2)
 canvas.create_line(0, 0, windowWidth, 0, fill = "#600000")
@@ -56,10 +56,10 @@ def updateTime():
     # Schedule the next update
     root.after(1000, updateTime)
 
-#def close_window(event = None):
-#    root.attributes('-fullscreen', False)  
-#    root.destroy()
+def close_window(event = None):
+    root.attributes('-fullscreen', False)  
+    root.destroy()
 
-#root.bind('<Escape>', close_window)
+root.bind('<Escape>', close_window)
 updateTime()
 root.mainloop()

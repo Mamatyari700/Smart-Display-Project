@@ -105,7 +105,7 @@ def updateWeather():
 root = tk.Tk()
 root.title("weatherPage")
 root.geometry(f"{windowWidth}x{windowHeight}")	#setting windowsize for testing 
-#root.attributes("-fullscreen", True)	#make the soft fullscreen
+root.attributes("-fullscreen", True)	#make the soft fullscreen
 root.configure(bg="black")
 canvas = tk.Canvas(root, width = windowWidth, height = 2)
 canvas.create_line(0, 0, windowWidth, 0, fill = "#600000")
@@ -114,7 +114,12 @@ weatherLabel = tk.Label(root)
 
 weatherLabel.pack()
 
-    
+def close_window(event = None):
+    root.attributes('-fullscreen', False)  
+    root.destroy()
+
+root.bind('<Escape>', close_window)
+
 updateWeather()
 root.mainloop()
 
