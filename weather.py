@@ -91,7 +91,7 @@ def drawCurrentWather(weatherForecastData):
 
 def updateWeather():
     now = time.localtime()
-    secondsToNextMinute = 60 - now.tm_sec
+    secondsToNextMinute = 60 - now.tm_sec #get time(sec) to sync the update timing
     weatherForecastData = getWeatherForecast(APIKeyForWeatherAPI, 3)
     draw.rectangle((0, 0, windowWidth, windowHeight), fill = (255, 255, 255, 0))
     

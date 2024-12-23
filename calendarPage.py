@@ -27,5 +27,5 @@ def generateCalendar(thisYear, thisMonth):
 
 print(f"{thisYear}")
 print(f"{thisMonth}")
-print(f"{prevMonth}")
-print(f"{nextMonth}")
+# print(f"{prevMonth}")
+# print(f"{nextMonth}")
