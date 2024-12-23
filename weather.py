@@ -3,6 +3,7 @@
 
 import tkinter as tk
 import time
+import os
 from PIL import Image, ImageDraw, ImageFont, ImageTk
 import requests
 
@@ -21,8 +22,7 @@ windowHeight = 600
 
 image = Image.new("RGBA", (windowWidth, windowHeight), (255, 255, 255, 0))
 draw = ImageDraw.Draw(image)
-
-fontPath = "./font/JiyunoTsubasa.ttf"
+fontPath = os.path.join(os.path.dirname(__file__), "font", "JiyunoTsubasa.ttf")
 
 CustomFont = ImageFont.truetype(fontPath, 20)
 CustomFontSmall = ImageFont.truetype(fontPath, 17)
@@ -90,6 +90,8 @@ def drawCurrentWather(weatherForecastData):
         return ImageTk.PhotoImage(image)
 
 def updateWeather():
+    now = time.localtime()
+    secondsToNextMinute = 60 - now.tm_sec
     weatherForecastData = getWeatherForecast(APIKeyForWeatherAPI, 3)
     draw.rectangle((0, 0, windowWidth, windowHeight), fill = (255, 255, 255, 0))
     
@@ -100,7 +102,7 @@ def updateWeather():
     weatherLabel.image = currentWeatherImage
     
 #    # Schedule the next update
-    root.after(60000, updateWeather)
+    root.after(secondsToNextMinute * 1000, updateWeather)
 
 root = tk.Tk()
 root.title("weatherPage")
